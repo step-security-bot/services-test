@@ -1,3 +1,3 @@
-def hello_world(msg: str) -> None:
+def hello_world(msg: str) -> str:
     result = msg.upper()
     return result
