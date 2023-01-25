@@ -87,13 +87,16 @@ jobs:
 
       - run: python -m pip install -r .github/workflows/requirements.txt
       - run: |
+          pwd
           ls -la
-          pip install coverage[toml]
-      - run: |
-          coverage combine
-          coverage report
-
-      # - name: Use Codecov to track coverage
-      #   uses: codecov/codecov-action@v2
-      #   with:
-      #     files: ./coverage.xml # coverage report
+      #     pip install coverage[toml]
+      # - run: |
+      #     coverage combine
+      #     ls -la
+      # - run: |
+      #     coverage debug data
+      # - run: |
+      #     coverage report -i
+      - run: tox -e coverage-report
+      # - run: |
+      #     coverage report
