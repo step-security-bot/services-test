@@ -1,11 +1,14 @@
+# https://github.com/github/codeql-action
+# https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning
 name: "CodeQL"
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
   pull_request:
-    branches: ["main"]
+    branches: [main]
 
+# remove?
 permissions:
   contents: read
 
@@ -17,15 +20,14 @@ jobs:
       contents: read
       security-events: write
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: ["python"]
-
     steps:
-      - uses: actions/checkout@v3
-      - uses: github/codeql-action/init@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
         with:
-          languages: ${{ matrix.language }}
-      # - uses: github/codeql-action/autobuild@v2
-      - uses: github/codeql-action/analyze@v2
+          languages: python
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
