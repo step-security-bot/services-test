@@ -7,74 +7,133 @@ on:
   pull_request:
     branches: [main]
 
-# TODO: add https://github.com/marketplace/actions/harden-runner
+# TODO
+# - add https://github.com/marketplace/actions/harden-runner
+# - add https://github.com/actions/stale
+
+# https://github.com/actions/setup-python
+# https://github.com/marketplace/actions/install-poetry-action
+# https://github.com/actions/cache/blob/main/examples.md#python---pip
 
 jobs:
   lint:
+    strategy:
+      matrix:
+        python-version: ["3.11"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
-          cache: "pip"
-          cache-dependency-path: pyproject.toml
+          python-version: ${{ matrix.python-version }}
+
+      # poetry config cache-dir
+
+      - name: Get pip cache dir
+        id: pip-cache
+        run: |
+          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            .tox
+            .venv
+            ${{ steps.pip-cache.outputs.dir }}
+            ~/.cache/pre-commit
+          # requirements txt
+          key: os-${{ runner.os }}.py-${{ matrix.python-version }}.${{ hashFiles('poetry.lock') }}.${{ hashFiles('tox.ini') }}.${{ hashFiles('.pre-commit-config.yaml') }}
+
       - run: |
           python -m pip install -r .github/workflows/requirements.txt
-      # https://github.com/pre-commit/action
-      # sets up pre-commit cache
-      - uses: pre-commit/action@v3.0.0
+
+      - run: |
+          python --version
+          poetry --version
+          pip list
+
+      - run: |
+          poetry config virtualenvs.in-project true
+          poetry config --list
+
+      - run: |
+          tox -e lint
+
       - run: |
           tox -e type
 
   test:
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest
           - macos-latest
           - windows-latest
-        python-version: ["3.11"]
+        python-version: ["3.8", "3.11"]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "pip"
-          cache-dependency-path: pyproject.toml
-      - run: python -m pip install -r .github/workflows/requirements.txt
-      - run: tox
-        env:
-          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}
-      # https://github.com/actions/cache/blob/main/examples.md#python---pip
-      - name: Cache .tox directory
+
+      - name: Cache
         uses: actions/cache@v3
         with:
-          path: ".tox"
-          key: ${{ runner.os }}-${{ matrix.python-version }}-tox-${{ hashFiles('tox.ini') }}-${{ hashFiles('pyproject.toml') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.python-version }}-tox
-      - name: Store coverage files
+          path: |
+            .tox
+            .venv
+          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
+
+      - run: python -m pip install -r .github/workflows/requirements.txt
+      - run: tox -e py
+        env:
+          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}
+
+      - name: Upload .coverage file
         uses: actions/upload-artifact@v3
         with:
           name: coverage-data
           path: .coverage.*
           if-no-files-found: ignore
+          retention-days: 7
 
   coverage:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - run: python -m pip install -r .github/workflows/requirements.txt
+
       - uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-          cache: "pip"
-          cache-dependency-path: pyproject.toml
-      - name: Get coverage files
+      - name: Download .coverage files
         uses: actions/download-artifact@v3
         with:
           name: coverage-data
-      - run: python -m pip install -r .github/workflows/requirements.txt
       - run: tox -e coverage-report
+
+  docs:
+    needs: [coverage]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install -r .github/workflows/requirements.txt
+
+      - run: tox -e docs

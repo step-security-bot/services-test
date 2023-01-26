@@ -8,10 +8,6 @@ on:
   pull_request:
     branches: [main]
 
-# remove?
-permissions:
-  contents: read
-
 jobs:
   analyze:
     runs-on: ubuntu-latest

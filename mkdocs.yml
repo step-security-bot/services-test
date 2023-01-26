@@ -13,8 +13,7 @@ nav:
 plugins:
   - search
   - mkdocstrings
+  - include-markdown
 
 markdown_extensions:
   - admonition
-  - markdown_include.include:
-      base_path: docs

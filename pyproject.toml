@@ -27,6 +27,9 @@ python = ">=3.8,<3.12"
 httpx = ">=0.23.3"
 typer = ">=0.7.0"
 
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.0.2"
+
 [tool.poetry.group.tests]
 optional = true
 
@@ -43,6 +46,12 @@ mkdocs = ">=1.4.2"
 mkdocs-material = ">=9.0.6"
 mkdocs-include-markdown-plugin = ">=4.0.3"
 mkdocstrings = {extras = ["python"], version = ">=0.20.0"}
+
+[tool.poetry.group.type]
+optional = true
+
+[tool.poetry.group.type.dependencies]
+mypy = ">=0.991"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
@@ -84,7 +93,6 @@ source = [
 
 [tool.coverage.report]
 fail_under = 100
-# skip_covered = true
 skip_empty = true
 
 [tool.ruff]
