@@ -5,8 +5,9 @@ authors = ["Heinz-Alexander Fuetterer <fuetterh@posteo.de>"]
 description = "services-test"
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/afuetterer/services-test"
 repository = "https://github.com/afuetterer/services-test"
+documentation = "https://afuetterer.github.io/services-test"
+
 packages = [
     { include = "services_test", from = "src" },
 ]
