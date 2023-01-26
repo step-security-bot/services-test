@@ -1,5 +1,7 @@
 # services-test
 
+> This repository is used to test services and configurations. Nothing to see here.
+
 [![ci][ci-badge]][ci]
 [![Coverage][coverage-badge]][coverage]
 [![License][license-badge]][license]

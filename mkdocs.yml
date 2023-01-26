@@ -1,0 +1,20 @@
+site_name: services-test
+site_description: services-test
+
+theme: material
+
+repo_name: afuetterer/services-test
+repo_url: https://github.com/afuetterer/services-test
+
+nav:
+  - Home: index.md
+  - License: license.md
+
+plugins:
+  - search
+  - mkdocstrings
+
+markdown_extensions:
+  - admonition
+  - markdown_include.include:
+      base_path: docs
