@@ -55,9 +55,6 @@ cover/
 *.mo
 *.pot
 
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 .pybuilder/
 target/
@@ -100,6 +97,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# mkdocs documentation
+/site
 
 # mypy
 .mypy_cache/
