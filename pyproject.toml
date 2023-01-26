@@ -70,12 +70,12 @@ branch = true
 parallel = true
 source = ["services_test"]
 
-[tool.coverage.paths]
-source = [
-  "src",
-  "*/site-packages",
-  "*/services_test"
-]
+# [tool.coverage.paths]
+# source = [
+#   "src/services_test",
+#   "*/site-packages",
+#   "*/services_test"
+# ]
 
 [tool.coverage.report]
 fail_under = 90
