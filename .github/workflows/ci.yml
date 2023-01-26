@@ -3,9 +3,11 @@ name: CI
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
   pull_request:
-    branches: ["main"]
+    branches: [main]
+
+# TODO: add https://github.com/marketplace/actions/harden-runner
 
 jobs:
   lint:
