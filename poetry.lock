@@ -446,24 +446,6 @@ importlib-metadata = {version = ">=4.4", markers = "python_version < \"3.10\""}
 testing = ["coverage", "pyyaml"]
 
 [[package]]
-name = "markdown-include"
-version = "0.8.0"
-description = "A Python-Markdown extension which provides an 'include' function"
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "markdown-include-0.8.0.tar.gz", hash = "sha256:b8f6b6f4e8b506cbe773d7e26c74a97d1354c35f3a3452d3449140a8f578d665"},
-    {file = "markdown_include-0.8.0-py3-none-any.whl", hash = "sha256:d12fb51500c46334a53608635035c78b7d8ad7f772566f70b8a6a9b2ef2ddbf5"},
-]
-
-[package.dependencies]
-markdown = ">=3.0"
-
-[package.extras]
-tests = ["pytest"]
-
-[[package]]
 name = "markupsafe"
 version = "2.1.2"
 description = "Safely add untrusted strings to HTML/XML markup."
@@ -579,6 +561,18 @@ files = [
 [package.dependencies]
 Markdown = ">=3.3"
 mkdocs = ">=1.1"
+
+[[package]]
+name = "mkdocs-include-markdown-plugin"
+version = "4.0.3"
+description = "Mkdocs Markdown includer plugin."
+category = "dev"
+optional = false
+python-versions = "<3.12,>=3.7"
+files = [
+    {file = "mkdocs_include_markdown_plugin-4.0.3-py3-none-any.whl", hash = "sha256:bea863f0f4773c2dba4524e629bed222b0ce4135bcd47fc2fc6f524384f21bd8"},
+    {file = "mkdocs_include_markdown_plugin-4.0.3.tar.gz", hash = "sha256:0b98f8877a6e262a91024dae0d40597b04ebe9175f5dfdfa5796a9068e24458a"},
+]
 
 [[package]]
 name = "mkdocs-material"
@@ -1090,5 +1084,5 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.8"
-content-hash = "b21024a5af232f3dc14899cfc7483748066648906ff802c05220432a0eb3c90e"
+python-versions = ">=3.8,<3.12"
+content-hash = "9cd3d5668857889325394655aa30243f65b9b259fbd5dec7d6074ec10fb9b7a9"
