@@ -69,14 +69,14 @@ testpaths = "tests"
 # https://coverage.readthedocs.io/en/7.0.5/config.html#configuration-reference
 branch = true
 parallel = true
-source = ["services_test"]
+source = ["src/services_test"]
 
-# [tool.coverage.paths]
-# source = [
-#   "src/services_test",
-#   "*/site-packages",
-#   "*/services_test"
-# ]
+[tool.coverage.paths]
+source = [
+  "src/services_test",
+  "*/site-packages/services_test",
+  "*/src/services_test"
+]
 
 [tool.coverage.report]
 fail_under = 100
