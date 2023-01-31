@@ -7,19 +7,19 @@ on:
   pull_request:
     branches: [main]
 
+# https://docs.github.com/en/actions/using-jobs/using-concurrency
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # TODO
 # - add https://github.com/marketplace/actions/harden-runner
 # - add https://github.com/actions/stale
 
 # https://github.com/actions/setup-python
-# https://github.com/marketplace/actions/install-poetry-action
-# https://github.com/actions/cache/blob/main/examples.md#python---pip
 
 jobs:
   lint:
-    strategy:
-      matrix:
-        python-version: ["3.11"]
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repository
@@ -28,14 +28,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
-
-      # poetry config cache-dir
-
-      - name: Get pip cache dir
-        id: pip-cache
-        run: |
-          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+          python-version: "3.11"
 
       - name: Cache
         uses: actions/cache@v3
@@ -43,22 +36,22 @@ jobs:
           path: |
             .tox
             .venv
-            ${{ steps.pip-cache.outputs.dir }}
+            ~/.cache/pip
+            ~/.cache/pypoetry
             ~/.cache/pre-commit
-          # requirements txt
-          key: os-${{ runner.os }}.py-${{ matrix.python-version }}.${{ hashFiles('poetry.lock') }}.${{ hashFiles('tox.ini') }}.${{ hashFiles('.pre-commit-config.yaml') }}
+          key: |
+            os-${{ runner.os }}_py-3.11_${{ hashFiles('poetry.lock', '.pre-commit-config.yaml') }}
+          restore-keys: |
+            os-${{ runner.os }}_py-3.11_
 
       - run: |
           python -m pip install -r .github/workflows/requirements.txt
+          poetry config virtualenvs.in-project true
 
       - run: |
           python --version
           poetry --version
           pip list
-
-      - run: |
-          poetry config virtualenvs.in-project true
-          poetry config --list
 
       - run: |
           tox -e lint
@@ -67,6 +60,7 @@ jobs:
           tox -e type
 
   test:
+    needs: [lint]
     strategy:
       fail-fast: false
       matrix:
@@ -74,28 +68,43 @@ jobs:
           - ubuntu-latest
           - macos-latest
           - windows-latest
-        python-version: ["3.8", "3.11"]
+        python-version: ["3.11"]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Cache
+      - name: Get pip cache dir
+        id: pip-cache
+        run: |
+          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        id: cache-dependencies
         uses: actions/cache@v3
         with:
           path: |
             .tox
             .venv
-          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
+            ${{ steps.pip-cache.outputs.dir }}
+            ~/.cache/pre-commit
+          key: |
+            os-${{ runner.os }}_py-${{ matrix.python-version }}_${{ hashFiles('poetry.lock', '.pre-commit-config.yaml') }}
+          restore-keys: |
+            os-${{ runner.os }}_py-${{ matrix.python-version }}_
 
-      - run: python -m pip install -r .github/workflows/requirements.txt
+      - run: |
+          python -m pip install -r .github/workflows/requirements.txt
+          poetry config virtualenvs.in-project true
+
       - run: tox -e py
         env:
-          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}
+          COVERAGE_FILE: .coverage.${{ runner.os }}-py${{ matrix.python-version }}
 
       - name: Upload .coverage file
         uses: actions/upload-artifact@v3
@@ -109,14 +118,32 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out the repository
         uses: actions/checkout@v3
 
-      - run: python -m pip install -r .github/workflows/requirements.txt
-
-      - uses: actions/setup-python@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
         with:
           python-version: "3.11"
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            .tox
+            .venv
+            ~/.cache/pip
+            ~/.cache/pypoetry
+            ~/.cache/pre-commit
+          key: |
+            os-${{ runner.os }}_py-3.11_${{ hashFiles('poetry.lock', '.pre-commit-config.yaml') }}
+          restore-keys: |
+            os-${{ runner.os }}_py-3.11_
+
+      - run: |
+          python -m pip install -r .github/workflows/requirements.txt
+          poetry config virtualenvs.in-project true
+
       - name: Download .coverage files
         uses: actions/download-artifact@v3
         with:
@@ -124,7 +151,36 @@ jobs:
       - run: tox -e coverage-report
 
   docs:
-    needs: [coverage]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            .tox
+            .venv
+            ~/.cache/pip
+            ~/.cache/pypoetry
+            ~/.cache/pre-commit
+          key: |
+            os-${{ runner.os }}_py-3.11_${{ hashFiles('poetry.lock', '.pre-commit-config.yaml') }}
+          restore-keys: |
+            os-${{ runner.os }}_py-3.11_
+
+      - run: |
+          python -m pip install -r .github/workflows/requirements.txt
+          poetry config virtualenvs.in-project true
+
+      - run: tox -e docs
+
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -136,4 +192,21 @@ jobs:
 
       - run: python -m pip install -r .github/workflows/requirements.txt
 
-      - run: tox -e docs
+      - run: poetry build
+
+  check: # This job does nothing and is only used for the branch protection
+    if: always()
+
+    needs:
+      - lint
+      - coverage
+      - docs
+      - build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
