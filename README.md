@@ -1,10 +1,12 @@
 # services-test
 
-> This repository is used to test services and configurations. Nothing to see here.
+This repository is used to test services and configurations. Nothing to see here.
 
 [![ci][ci-badge]][ci]
 [![Coverage][coverage-badge]][coverage]
 [![License][license-badge]][license]
+
+[![black][black-badge]][black]
 
 ---
 
@@ -27,3 +29,5 @@ Python 3.8+
 [docs]: https://afuetterer.github.io/services-test
 [license]: https://opensource.org/licenses/MIT
 [license-badge]: https://img.shields.io/github/license/afuetterer/services-test
+[black]: https://github.com/psf/black
+[black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
