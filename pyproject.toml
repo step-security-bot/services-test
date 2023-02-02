@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "services-test"
-version = "2023.1.31"
+version = "2023.2.2"
 authors = ["Heinz-Alexander Fuetterer <fuetterh@posteo.de>"]
 description = "services-test"
 license = "MIT"
@@ -125,7 +125,7 @@ keep-runtime-typing = true
 
 # https://github.com/mbarkhau/bumpver#configuration
 [tool.bumpver]
-current_version = "2023.1.31"
+current_version = "2023.2.2"
 version_pattern = "YYYY.MM.DD"
 # https://github.com/googleapis/release-please#how-do-i-change-the-version-number
 commit_message = """
