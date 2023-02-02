@@ -9,6 +9,7 @@ repo_url: https://github.com/afuetterer/services-test
 nav:
   - Home: index.md
   - Usage: cli.md
+  - Changelog: changelog.md
   - License: license.md
 
 plugins:
