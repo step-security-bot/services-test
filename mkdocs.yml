@@ -8,6 +8,7 @@ repo_url: https://github.com/afuetterer/services-test
 
 nav:
   - Home: index.md
+  - Usage: cli.md
   - License: license.md
 
 plugins:
@@ -17,3 +18,4 @@ plugins:
 
 markdown_extensions:
   - admonition
+  - mkdocs-click

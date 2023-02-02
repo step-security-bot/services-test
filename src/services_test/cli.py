@@ -35,3 +35,7 @@ def cli(
 def hello(msg: str = typer.Argument(..., help="The message.")) -> None:  # noqa: B008
     """Hello world command."""
     typer.echo(hello_world(msg))
+
+
+# used only for documenting the CLI with mkdocs-click
+click_object = typer.main.get_command(app)
