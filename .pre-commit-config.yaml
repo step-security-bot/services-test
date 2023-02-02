@@ -27,7 +27,15 @@ repos:
     rev: v3.0.0-alpha.4
     hooks:
       - id: prettier
-        exclude: .git/
+        # .git/COMMIT_EDITMSG: commitizen needs to read this file
+        # CHANGELOG.md: release-please autocreates this file, prettier would mess with it
+        # docs/cli.md: prettier would destroy the required indentation
+        exclude: >
+          (?x)^(
+            ^\.git/COMMIT_EDITMSG$|
+            ^CHANGELOG\.md$|
+            ^docs/cli\.md$|
+          )$
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.0.238
