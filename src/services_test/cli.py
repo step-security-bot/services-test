@@ -32,6 +32,6 @@ def cli(
 
 
 @app.command()
-def hello(msg: str = typer.Argument(..., help="The message.")):  # noqa: B008
+def hello(msg: str = typer.Argument(..., help="The message.")) -> None:  # noqa: B008
     """Hello world command."""
     typer.echo(hello_world(msg))

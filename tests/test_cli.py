@@ -28,7 +28,7 @@ def test_version_option_displays_version(version_option_name: str) -> None:
     assert __version__ in result.stdout
 
 
-def test_hello():
+def test_hello() -> None:
     result = runner.invoke(app, ["hello", "world"])
     assert result.exit_code == 0
     assert "WORLD" in result.stdout
