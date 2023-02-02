@@ -136,3 +136,6 @@ push = false
     "{version}",
     "date-released: YYYY-0M-0D",
 ]
+".github/workflows/release.yml" = [
+  "{version}",
+]
