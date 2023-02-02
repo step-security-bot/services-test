@@ -28,17 +28,13 @@ httpx = ">=0.23.3"
 typer = {extras = ["all"], version = ">=0.7.0"}
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = ">=3.0.2"
 bumpver = ">=2022.1120"
-pytest-mock = "^3.10.0"
-
-[tool.poetry.group.tests]
-optional = true
-
-[tool.poetry.group.tests.dependencies]
 coverage = ">=7.1.0"
 coverage-badge = ">=1.1.0"
+mypy = ">=0.991"
+pre-commit = ">=3.0.2"
 pytest = ">=7.2.1"
+pytest-mock = ">=3.10.0"
 
 [tool.poetry.group.docs]
 optional = true
@@ -48,12 +44,6 @@ mkdocs = ">=1.4.2"
 mkdocs-material = ">=9.0.6"
 mkdocs-include-markdown-plugin = ">=4.0.3"
 mkdocstrings = {extras = ["python"], version = ">=0.20.0"}
-
-[tool.poetry.group.type]
-optional = true
-
-[tool.poetry.group.type.dependencies]
-mypy = ">=0.991"
 
 [tool.poetry.scripts]
 services-test = "services_test.__main__:app"
