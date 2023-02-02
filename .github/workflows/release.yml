@@ -6,6 +6,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   release-please:
     permissions:
@@ -17,6 +20,5 @@ jobs:
         with:
           release-type: python
           version-file: pyproject.toml
-          package-name: services-test
           include-v-in-tag: false
-          pull-request-title-pattern: "bump: ${version}"
+          pull-request-title-pattern: "chore: release ${version}"

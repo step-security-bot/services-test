@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "services-test"
-version = "2023.2.1"
+version = "2023.2.2"
 authors = ["Heinz-Alexander Fuetterer <fuetterh@posteo.de>"]
 description = "services-test"
 license = "MIT"
@@ -29,6 +29,7 @@ typer = ">=0.7.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = ">=3.0.2"
+bumpver = ">=2022.1120"
 
 [tool.poetry.group.tests]
 optional = true
@@ -117,3 +118,26 @@ known-first-party = ["services_test", "tests"]
 [tool.ruff.pyupgrade]
 # https://github.com/charliermarsh/ruff#pyupgrade
 keep-runtime-typing = true
+
+# https://github.com/mbarkhau/bumpver#configuration
+[tool.bumpver]
+current_version = "2023.2.2"
+version_pattern = "YYYY.MM.DD"
+# https://github.com/googleapis/release-please#how-do-i-change-the-version-number
+commit_message = """
+chore: prepare for {new_version}
+
+Release-As: {new_version}
+"""
+commit = true
+tag = false
+push = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    "{version}",
+]
+"CITATION.cff" = [
+    "{version}",
+    "date-released: YYYY-0M-0D",
+]
