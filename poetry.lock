@@ -665,6 +665,22 @@ Markdown = ">=3.3"
 mkdocs = ">=1.1"
 
 [[package]]
+name = "mkdocs-click"
+version = "0.8.0"
+description = "An MkDocs extension to generate documentation for Click command line applications"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "mkdocs_click-0.8.0-py3-none-any.whl", hash = "sha256:f9c26d4abd505bca4113d1529d03d1ae709a68a82fc364db289634788d029353"},
+    {file = "mkdocs_click-0.8.0.tar.gz", hash = "sha256:965f38231eb04d8c980406c5ab4becf7303ef3ffc68fdb29be91927eff1adfbe"},
+]
+
+[package.dependencies]
+click = ">=8.1,<9.0"
+markdown = ">=3.0.0,<4.0.0"
+
+[[package]]
 name = "mkdocs-include-markdown-plugin"
 version = "4.0.3"
 description = "Mkdocs Markdown includer plugin."
@@ -1430,4 +1446,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "5cc310e6b2d3b2b49e8302fbf610750952269b6b86ad50ce2693384a68f251a6"
+content-hash = "fc77532408aacc95e97949d317989ee8c076d8a13d7f9d654b2195c53420633f"

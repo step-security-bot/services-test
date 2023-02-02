@@ -41,9 +41,10 @@ optional = true
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = ">=1.4.2"
-mkdocs-material = ">=9.0.6"
-mkdocs-include-markdown-plugin = ">=4.0.3"
 mkdocstrings = {extras = ["python"], version = ">=0.20.0"}
+mkdocs-click = ">=0.8.0"
+mkdocs-include-markdown-plugin = ">=4.0.3"
+mkdocs-material = ">=9.0.6"
 
 [tool.poetry.scripts]
 services-test = "services_test.__main__:app"
