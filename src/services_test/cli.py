@@ -8,6 +8,7 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
 app = typer.Typer()
 
+
 # https://typer.tiangolo.com/tutorial/options/version/
 def version_callback(value: bool) -> None:
     if value:
