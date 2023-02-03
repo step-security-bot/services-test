@@ -38,7 +38,7 @@ repos:
           )$
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.238
+    rev: v0.0.240
     hooks:
       - id: ruff
 
@@ -50,6 +50,6 @@ repos:
         args: ["--format=ansi"]
 
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v2.39.0
+    rev: v2.40.0
     hooks:
       - id: commitizen
