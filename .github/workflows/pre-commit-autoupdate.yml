@@ -1,5 +1,8 @@
 name: Update pre-commit hooks
 
+permissions:
+  contents: read
+
 on:
   schedule:
     # run once a month at midnight of the first day of the month
@@ -8,6 +11,8 @@ on:
 
 jobs:
   update:
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
