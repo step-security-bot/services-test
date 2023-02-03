@@ -24,11 +24,9 @@ def cli(
         callback=version_callback,
         is_eager=True,
         help="Show the version and exit.",
-    )
+    ),
 ) -> None:
-    """
-    services-test Command Line Interface.
-    """
+    """services-test Command Line Interface."""
 
 
 @app.command()

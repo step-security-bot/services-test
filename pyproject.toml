@@ -94,7 +94,7 @@ skip_empty = true
 [tool.ruff]
 # https://github.com/charliermarsh/ruff#configuration
 line-length = 100
-select = ["B", "E", "F", "I", "S", "UP"]
+select = ["B", "E", "F", "I", "S", "TCH", "UP"]
 src = ["src", "tests"]
 # Always autofix, but never try to fix "F401" (unused imports).
 fix = true
